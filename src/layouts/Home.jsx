@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 import bgImg from "../assets/home-hero.png";
-import Footer from "../components/footer";
+import Footer from "../components/Footer";
 
 const Home = () => {
   return (
