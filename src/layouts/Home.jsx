@@ -1,13 +1,10 @@
 import React from "react";
-import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 import bgImg from "../assets/home-hero.png";
-import Footer from "../components/Footer";
 
 const Home = () => {
   return (
-    <main className="bg-cover bg-center h-screen">
-      <Navbar />
+    <main className="">
       <section
         className="flex flex-col gap-7 bg-cover bg-center p-8 h-[80vh]"
         style={{ backgroundImage: `url(${bgImg})` }}
@@ -26,7 +23,6 @@ const Home = () => {
           Find your van
         </Link>
       </section>
-      <Footer />
     </main>
   );
 };

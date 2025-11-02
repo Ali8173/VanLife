@@ -1,13 +1,11 @@
 import React from "react";
-import Navbar from "../components/Navbar";
+
 import bgImg from "../assets/about-hero.png";
 import { Link } from "react-router-dom";
 
 const About = () => {
   return (
     <section className="container">
-      <Navbar />
-
       <img src={bgImg} className="about-hero-image" />
       <article className="flex flex-col gap-6 px-8 py-7">
         <h1 className="font-bold text-4xl">
