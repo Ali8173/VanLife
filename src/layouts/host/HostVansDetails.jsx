@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams, NavLink, Link, Outlet } from "react-router-dom";
 import clsx from "clsx";
-import { getVanStyle } from "../conditional";
+import { getVanStyle } from "../../conditional";
 
 const HostVanDetails = () => {
   const [van, setVan] = React.useState(null);

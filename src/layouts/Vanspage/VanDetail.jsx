@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import { getVanStyle } from "./conditional";
-import "../server";
+import { getVanStyle } from "../../conditional";
+import "../../server";
 
 import clsx from "clsx";
 
