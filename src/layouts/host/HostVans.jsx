@@ -17,7 +17,7 @@ const HostVans = () => {
         <article className="flex flex-col gap-4 pb-12">
           {hostVans.map((hostVan) => {
             return (
-              <Link key={hostVan.id} to={`/host/hostvans/${hostVan.id}`}>
+              <Link key={hostVan.id} to={hostVan.id}>
                 <div className="flex gap-4 bg-white shadow p-4 rounded">
                   <img
                     className="rounded h-20"

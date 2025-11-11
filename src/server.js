@@ -1,4 +1,4 @@
-import { createServer, Model } from "miragejs";
+import { createServer, Model, Response } from "miragejs";
 
 createServer({
   models: {
@@ -26,7 +26,7 @@ createServer({
       imageUrl:
         "https://assets.scrimba.com/advanced-react/react-router/beach-bum.png",
       type: "rugged",
-      hostId: "345",
+      hostId: "123",
     });
     server.create("van", {
       id: "3",
@@ -37,7 +37,7 @@ createServer({
       imageUrl:
         "https://assets.scrimba.com/advanced-react/react-router/reliable-red.png",
       type: "luxury",
-      hostId: "123",
+      hostId: "456",
     });
     server.create("van", {
       id: "4",
@@ -48,7 +48,7 @@ createServer({
       imageUrl:
         "https://assets.scrimba.com/advanced-react/react-router/dreamfinder.png",
       type: "simple",
-      hostId: "567",
+      hostId: "789",
     });
     server.create("van", {
       id: "5",
@@ -59,7 +59,7 @@ createServer({
       imageUrl:
         "https://assets.scrimba.com/advanced-react/react-router/the-cruiser.png",
       type: "luxury",
-      hostId: "456",
+      hostId: "789",
     });
     server.create("van", {
       id: "6",
@@ -76,9 +76,12 @@ createServer({
 
   routes() {
     this.namespace = "api";
+    this.logging = false;
+    // this.timing = 2000
 
     this.get("/vans", (schema, request) => {
-      return schema.vans.all();
+      return new Response(400, {}, { error: "Error fetching data" });
+      // return schema.vans.all()
     });
 
     this.get("/vans/:id", (schema, request) => {
@@ -87,11 +90,12 @@ createServer({
     });
 
     this.get("/host/vans", (schema, request) => {
-      const id = request.params.id;
+      // Hard-code the hostId for now
       return schema.vans.where({ hostId: "123" });
     });
 
     this.get("/host/vans/:id", (schema, request) => {
+      // Hard-code the hostId for now
       const id = request.params.id;
       return schema.vans.findBy({ id, hostId: "123" });
     });

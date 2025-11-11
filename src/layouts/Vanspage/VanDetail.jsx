@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { getVanStyle } from "../../conditional";
+import { Link } from "react-router-dom";
 import "../../server";
 
 import clsx from "clsx";
@@ -8,6 +9,7 @@ import clsx from "clsx";
 const VanDetail = () => {
   const params = useParams();
   const [van, setVan] = useState(null);
+  const location = useLocation();
 
   React.useEffect(() => {
     fetch(`/api/vans/${params.id}`)
@@ -16,8 +18,18 @@ const VanDetail = () => {
   }, [params.id]);
 
   return (
-    <section className="">
+    <section className="bg-orange-50">
       <main className="p-5">
+        <Link
+          to={`..?${location.state?.search || ""}`}
+          relative="path"
+          className="font-light underline"
+        >
+          ← Back to{" "}
+          {location.state.type
+            ? location.state.type + " " + "vans"
+            : "all vans"}
+        </Link>
         {van ? (
           <article className="flex flex-col justify-center">
             <img

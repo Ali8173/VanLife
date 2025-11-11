@@ -2,70 +2,89 @@ import React from "react";
 import "../../server";
 import { getVanStyle } from "../../conditional";
 import { clsx } from "clsx";
-import { Link, useSearchParams, NavLink } from "react-router-dom";
-import {} from "react-router-dom";
+import { Link, useSearchParams, useLoaderData } from "react-router-dom";
+import { twMerge } from "tailwind-merge";
+import { getVans } from "../../api";
+
+export function loader() {
+  return getVans();
+}
 
 const Vans = () => {
-  const [data, setData] = React.useState([]);
+  const vans = useLoaderData();
   const [searchParams, setSearchParams] = useSearchParams();
-  React.useEffect(() => {
-    fetch("/api/vans")
-      .then((res) => res.json())
-      .then((data) => setData(data.vans));
-  }, []);
+  const [error, setError] = React.useState(null);
 
   const typeFilter = searchParams.get("type");
 
   const displayedVans = typeFilter
-    ? data.filter((van) => van.type === typeFilter)
-    : data;
-  console.log(typeFilter);
+    ? vans.filter((van) => van.type === typeFilter)
+    : vans;
+
+  if (error) {
+    return (
+      <h1 className="flex justify-center items-center bg-red-100 h-[80vh] text-red-700">
+        Error: {error.message || "Failed to load vans"}
+      </h1>
+    );
+  }
 
   return (
-    <section>
+    <section className="bg-orange-50 h-screen">
       <main className="p-5">
         <h1 className="block mb-4 font-semibold text-3xl">
           Explore our van options
         </h1>
-        <nav className="flex justify-between mb-7 max-w-[70%]">
-          <NavLink
-            className={({ isActive }) =>
-              isActive
-                ? "bg-orange-500 text-white rounded px-3 py-1 "
-                : "bg-orange-100 hover:bg-orange-500 px-3 py-1 rounded hover:text-white"
-            }
-            to="?type=simple"
+        <nav className="flex justify-between gap-4 mb-7 w-fit">
+          <button
+            className={clsx(
+              "bg-orange-100 hover:bg-orange-500 px-3 py-1 rounded hover:text-white",
+              typeFilter === "simple" && "bg-orange-500 text-white"
+            )}
+            onClick={() => setSearchParams({ type: "simple" })}
           >
             Simple
-          </NavLink>
-          <NavLink
-            className={({ isActive }) =>
-              isActive
-                ? "bg-black text-white rounded px-3 py-1 "
-                : "bg-orange-100 hover:bg-black px-3 py-1 rounded hover:text-white"
-            }
-            to="?type=luxury"
+          </button>
+          <button
+            className={twMerge(
+              clsx(
+                "bg-orange-100 hover:bg-black px-3 py-1 rounded hover:text-white",
+                typeFilter === "luxury" && "bg-black text-white"
+              )
+            )}
+            onClick={() => setSearchParams({ type: "luxury" })}
           >
             Luxury
-          </NavLink>
-          <NavLink
-            className={({ isActive }) =>
-              isActive
-                ? "bg-green-700 text-white rounded px-3 py-1 "
-                : "bg-orange-100 hover:bg-green-700 px-3 py-1 rounded hover:text-white"
-            }
-            to="?type=rugged"
+          </button>
+          <button
+            className={twMerge(
+              clsx(
+                "bg-orange-100 hover:bg-green-700 px-3 py-1 rounded hover:text-white",
+                typeFilter === "rugged" && "bg-green-700 text-white"
+              )
+            )}
+            onClick={() => setSearchParams({ type: "rugged" })}
           >
             Rugged
-          </NavLink>
-          <Link className="px-2 py-1 underline" to=".">
-            Clear All
-          </Link>
+          </button>
+          {typeFilter && (
+            <button
+              className="px-2 py-1 underline"
+              onClick={() => setSearchParams({})}
+            >
+              Clear All
+            </button>
+          )}
         </nav>
         <article className="flex flex-wrap gap-4">
           {displayedVans.map((van) => {
             return (
-              <Link className="max-w-[30%]" key={van.id} to={`/vans/${van.id}`}>
+              <Link
+                className="max-w-[30%]"
+                key={van.id}
+                to={van.id}
+                state={{ search: searchParams.toString(), type: typeFilter }}
+              >
                 <img
                   className="rounded object-cover"
                   src={van.imageUrl}
